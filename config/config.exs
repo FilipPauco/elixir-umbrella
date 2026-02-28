@@ -31,7 +31,7 @@
 import Config
 
 config :attendance,
-  generators: [timestamp_type: :utc_datetime, migration_path: "apps/core/priv/repo/migrations"]
+  generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
 config :attendance, AttendanceWeb.Endpoint,
@@ -41,7 +41,7 @@ config :attendance, AttendanceWeb.Endpoint,
     formats: [html: CoreWeb.ErrorHTML, json: CoreWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: CoreWeb.PubSub,
+  pubsub_server: Core.PubSub,
   live_view: [signing_salt: "haBGqh9H"]
 
 # Configures Elixir's Logger
@@ -68,6 +68,10 @@ config :reverse_proxy, ReverseProxyWeb.Endpoint,
     layout: false
   ],
   live_view: [signing_salt: "haBGqh9H"]
+
+config :attendance,
+  ecto_repos: [Core.Repo],
+  generators: [context_app: :attendance]
 
 config :core,
   ecto_repos: [Core.Repo],
@@ -96,7 +100,7 @@ config :core, Core.Mailer, adapter: Swoosh.Adapters.Local
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.25.4",
-  core: [
+  default: [
     args:
       ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/* --alias:@=.),
     cd: Path.expand("../apps/core/assets", __DIR__),
@@ -106,7 +110,7 @@ config :esbuild,
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "4.1.7",
-  core: [
+  default: [
     args: ~w(
       --input=assets/css/app.css
       --output=priv/static/assets/css/app.css

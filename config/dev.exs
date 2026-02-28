@@ -13,8 +13,7 @@ config :attendance, AttendanceWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "38nUxB4ieA6GOpC/zACjkCs7VHTpYkDflTr7r4XciyDDDEOX+7x/qmjYZNPwTjrA",
-  watchers: []
+  secret_key_base: "38nUxB4ieA6GOpC/zACjkCs7VHTpYkDflTr7r4XciyDDDEOX+7x/qmjYZNPwTjrA"
 
 # ## SSL Support
 #
@@ -42,9 +41,10 @@ config :attendance, AttendanceWeb.Endpoint,
 # Watch static and templates for browser reloading.
 config :attendance, AttendanceWeb.Endpoint,
   live_reload: [
+    suffix: "/attendance",
     web_console_logger: true,
     patterns: [
-      ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"lib/attendance_web/(?:controllers|live|components|router)/?.*\.(ex|heex)$"
     ]
   ]
@@ -61,15 +61,20 @@ config :attendance, dev_routes: false
 config :reverse_proxy, ReverseProxyWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: String.to_integer(System.get_env("PORT") || "4000")],
+  http: [
+    ip: {127, 0, 0, 1},
+    port: String.to_integer(System.get_env("PORT") || "4000"),
+    thousand_island_options: [silent_terminate_on_error: true]
+  ],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "38nUxB4ieA6GOpC/zACjkCs7VHTpYkDflTr7r4XciyDDDEOX+7x/qmjYZNPwTjrA",
-  watchers: [
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
-  ]
+  secret_key_base: "38nUxB4ieA6GOpC/zACjkCs7VHTpYkDflTr7r4XciyDDDEOX+7x/qmjYZNPwTjrA"
+
+# watchers: [
+#   esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+#   tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
+# ]
 
 # ## SSL Support
 #
@@ -131,8 +136,8 @@ config :core, CoreWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "38nUxB4ieA6GOpC/zACjkCs7VHTpYkDflTr7r4XciyDDDEOX+7x/qmjYZNPwTjrA",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:core, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:core, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support

@@ -24,6 +24,8 @@ defmodule ReverseProxyWeb.Endpoint do
   # proxy_all("foofoovalve.com", FoofooValve.Endpoint)
 
   # Matches anything not matched above
+  proxy_path("/phoenix/live_reload/socket/attendance", AttendanceWeb.Endpoint)
+  proxy_path("/phoenix/live_reload/frame/attendance", AttendanceWeb.Endpoint)
   proxy_path("/attendance", AttendanceWeb.Endpoint)
   proxy_default(CoreWeb.Endpoint)
 end
