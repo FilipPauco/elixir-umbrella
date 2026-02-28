@@ -7,10 +7,12 @@ defmodule ReverseProxy.Application do
 
   @impl true
   def start(_type, _args) do
+    :logger.add_primary_filter(:tcp_noise, {&__MODULE__.filter_tcp_noise/2, []})
+
     children = [
       ReverseProxyWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:reverse_proxy, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: ReverseProxy.PubSub},
+      # {Phoenix.PubSub, name: ReverseProxy.PubSub},
       # Start a worker by calling: ReverseProxy.Worker.start_link(arg)
       # {ReverseProxy.Worker, arg},
       # Start to serve requests, typically the last entry
